@@ -1,4 +1,8 @@
-const socket = io();
+const socket = io("https://real-time-tracker-dusky.vercel.app/", {
+  path: "/socket.io",
+  transports: ["polling"],
+});
+
 let username = localStorage.getItem("username");
 
 if (!username) {
@@ -48,7 +52,9 @@ function initMap() {
       markers[id].setLatLng([latitude, longitude]);
     } else {
       const marker = L.marker([latitude, longitude]).addTo(map);
-      marker.bindPopup(`
+      marker
+        .bindPopup(
+          `
 		<div style="
 		  width: auto;
 		  text-align: center;
@@ -57,7 +63,9 @@ function initMap() {
 		">
 		  ${username}
 		</div>
-	  `).openPopup();
+	  `
+        )
+        .openPopup();
       markers[id] = marker;
     }
   });

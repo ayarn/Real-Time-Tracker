@@ -7,7 +7,10 @@ const http = require("http");
 const server = http.createServer(app);
 
 const socketio = require("socket.io");
-const io = socketio(server);
+const io = socketio(server, {
+  path: "/socket.io",
+  transports: ["polling"],
+});
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -20,7 +23,7 @@ io.on("connect", (socket) => {
 
   socket.on("disconnect", () => {
     io.emit("user-disconnected", socket.id);
-  })
+  });
 });
 
 app.get("/", (req, res) => {
